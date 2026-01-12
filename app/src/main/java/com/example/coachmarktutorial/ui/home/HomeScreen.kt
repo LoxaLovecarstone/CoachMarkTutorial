@@ -11,11 +11,9 @@ import com.example.coachmarktutorial.ui.components.FeedItem
 import com.example.coachmarktutorial.ui.theme.Dimens
 
 @Composable
-fun HomeScreen(
-    modifier: Modifier = Modifier
-) {
+fun HomeScreen() {
     LazyColumn(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(vertical = Dimens.PaddingSmall)
