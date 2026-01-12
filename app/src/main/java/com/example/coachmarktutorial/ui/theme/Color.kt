@@ -2,10 +2,16 @@ package com.example.coachmarktutorial.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Brand Colors
+val SnsBlue = Color(0xFF3B82F6)        // 메인 포인트 컬러 (버튼 등)
+val SnsBluePressed = Color(0xFF2563EB) // 버튼 눌렸을 때
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Background Colors
+val White = Color(0xFFFFFFFF)
+val LightGray = Color(0xFFF3F4F6)      // 카드 배경, 연한 회색
+val DarkGray = Color(0xFF1F2937)       // 진한 텍스트
+
+// Text Colors
+val TextBlack = Color(0xFF111827)      // 기본 본문
+val TextGray = Color(0xFF6B7280)       // 날짜, 부가 설명
+val TextWhite = Color(0xFFFFFFFF)      // 버튼 위 텍스트
