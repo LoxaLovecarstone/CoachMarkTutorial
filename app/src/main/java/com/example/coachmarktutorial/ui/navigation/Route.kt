@@ -16,7 +16,7 @@ sealed class Route(
     data object Profile : Route("profile", "My Profile", Icons.Default.AccountCircle)
 
     // 바텀 내비 없는 것
-    data object Write : Route("write", "새 글 작성")
+    data object Post : Route("post", "새 글 작성")
     data object Search : Route("search", "검색")
     data object ProfileEdit : Route("profile_edit", "프로필 수정")
 

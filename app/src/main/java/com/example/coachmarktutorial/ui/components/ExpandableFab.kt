@@ -36,7 +36,7 @@ import com.example.coachmarktutorial.ui.theme.Dimens
 fun ExpandableFab(
     isExpanded: Boolean,
     onFabClick: () -> Unit,
-    onWriteClick: () -> Unit,
+    onPostClick: () -> Unit,
     onSearchClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -61,7 +61,7 @@ fun ExpandableFab(
             visible = isExpanded,
             icon = Icons.Default.Edit,
             text = "글 쓰기",
-            onClick = onWriteClick
+            onClick = onPostClick
         )
 
         FloatingActionButton(
