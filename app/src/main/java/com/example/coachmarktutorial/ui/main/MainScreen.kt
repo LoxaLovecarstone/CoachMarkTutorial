@@ -1,5 +1,6 @@
 package com.example.coachmarktutorial.ui.main
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -31,11 +33,14 @@ import com.example.coachmarktutorial.ui.home.HomeScreen
 import com.example.coachmarktutorial.ui.navigation.Route
 import com.example.coachmarktutorial.ui.post.PostScreen
 import com.example.coachmarktutorial.ui.profile.ProfileScreen
+import com.example.coachmarktutorial.ui.search.SearchScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
+
+    val context = LocalContext.current
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: Route.Home.path
@@ -46,7 +51,7 @@ fun MainScreen() {
     //  Route 객체에서 제목을 찾아옴
     val currentTitle = when (currentRoute) {
         Route.Post.path -> Route.Post.title
-        // Route.Search.path -> Route.Search.title // 나중에 검색 추가 시
+        Route.Search.path -> Route.Search.title
         else -> Route.bottomBarRoutes.find { it.path == currentRoute }?.title ?: "Coach Mark"
     }
 
@@ -124,7 +129,7 @@ fun MainScreen() {
                     },
                     onSearchClick = {
                         isFabExpanded = false
-                        // TODO: 검색 화면 이동
+                        navController.navigate(Route.Search.path)
                     }
                 )
             }
@@ -146,6 +151,14 @@ fun MainScreen() {
                     onBackClick = { navController.popBackStack() },
                     onSaveClick = {
                         navController.popBackStack()
+                    }
+                )
+            }
+            composable(Route.Search.path) {
+                SearchScreen(
+                    onPostClick = { postId ->
+                        // [수정] this 대신 context 사용 & .show() 추가
+                        Toast.makeText(context, "Clicked post: $postId", Toast.LENGTH_SHORT).show()
                     }
                 )
             }
