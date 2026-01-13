@@ -61,6 +61,7 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.57.1")
     ksp("com.google.dagger:hilt-android-compiler:2.57.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
 
     implementation("androidx.navigation:navigation-compose:2.8.0")
     // Preferences DataStore (SharedPreferences like APIs)

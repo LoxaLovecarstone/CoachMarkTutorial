@@ -4,22 +4,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.coachmarktutorial.ui.components.FeedItem
 import com.example.coachmarktutorial.ui.theme.Dimens
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: FeedViewModel = hiltViewModel()
+) {
+    val posts by viewModel.posts.collectAsState()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         contentPadding = PaddingValues(vertical = Dimens.PaddingSmall)
     ) {
-        items(10) { index ->
-            FeedItem(index)
+        items(posts) { post ->
+            FeedItem(post = post)
         }
     }
 }
