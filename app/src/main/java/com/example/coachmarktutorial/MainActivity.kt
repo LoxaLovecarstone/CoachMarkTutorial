@@ -15,7 +15,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CoachMarkTutorialTheme {
-                // 이제 여기서 바로 MainScreen을 호출합니다.
                 MainScreen()
             }
         }

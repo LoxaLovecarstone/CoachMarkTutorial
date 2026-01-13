@@ -33,6 +33,7 @@ import com.example.coachmarktutorial.ui.home.HomeScreen
 import com.example.coachmarktutorial.ui.navigation.Route
 import com.example.coachmarktutorial.ui.post.PostScreen
 import com.example.coachmarktutorial.ui.profile.ProfileScreen
+import com.example.coachmarktutorial.ui.profile.edit.ProfileEditScreen
 import com.example.coachmarktutorial.ui.search.SearchScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -144,7 +145,11 @@ fun MainScreen() {
                 HomeScreen()
             }
             composable(Route.Profile.path) {
-                ProfileScreen()
+                ProfileScreen(
+                    onEditClick = {
+                        navController.navigate(Route.ProfileEdit.path)
+                    }
+                )
             }
             composable(Route.Post.path) {
                 PostScreen(
@@ -159,6 +164,13 @@ fun MainScreen() {
                     onPostClick = { postId ->
                         // [수정] this 대신 context 사용 & .show() 추가
                         Toast.makeText(context, "Clicked post: $postId", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+            composable(Route.ProfileEdit.path) {
+                ProfileEditScreen(
+                    onSaveSuccess = {
+                        navController.popBackStack() // 저장 후 뒤로가기
                     }
                 )
             }

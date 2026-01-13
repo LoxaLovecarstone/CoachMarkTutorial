@@ -9,17 +9,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.coachmarktutorial.ui.theme.Dimens
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    onEditClick: () -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel()
+) {
+    //뷰모델 데이터 관찰
+    val profile by viewModel.profile.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -27,7 +37,6 @@ fun ProfileScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // 프로필 이미지 (더미)
         Box(
             modifier = Modifier
                 .size(100.dp)
@@ -37,20 +46,24 @@ fun ProfileScreen() {
 
         Spacer(modifier = Modifier.height(Dimens.PaddingLarge))
 
-        // 이름
         Text(
-            text = "Team Leader Kim",
+            text = profile.name,
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(Dimens.PaddingSmall))
 
-        // 소개글
         Text(
-            text = "Android Developer & Coach Mark Master",
+            text = profile.statusMessage,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
+
+        Spacer(modifier = Modifier.height(Dimens.PaddingLarge))
+
+        Button(onClick = onEditClick) {
+            Text("프로필 수정")
+        }
     }
 }
