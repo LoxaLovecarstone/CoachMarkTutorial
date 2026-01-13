@@ -2,11 +2,8 @@ package com.example.coachmarktutorial.ui.main
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -15,14 +12,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.materiala3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.coachmarktutorial.ui.components.ExpandableFab
 import com.example.coachmarktutorial.ui.home.HomeScreen
 import com.example.coachmarktutorial.ui.navigation.Route
 import com.example.coachmarktutorial.ui.profile.ProfileScreen
@@ -36,12 +39,17 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: Route.Home.path
 
-    // 2. [핵심] 화면별 UI 표시 여부 & 타이틀 관리
+    // 화면별 UI 표시 여부 & 타이틀 관리
     val isHome = currentRoute == Route.Home.path
 
     // TopBar 타이틀: 현재 라우트에 맞는 title을 찾음
     val currentTitle = Route.bottomBarRoutes.find { it.path == currentRoute }?.title ?: "Coach Mark"
 
+    var isFabExpanded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(currentRoute) {
+        isFabExpanded = false
+    }
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
@@ -91,12 +99,18 @@ fun MainScreen() {
         floatingActionButton = {
             // FAB는 '홈' 화면일 때만
             if (isHome) {
-                FloatingActionButton(
-                    onClick = { /* TODO */ },
-                    containerColor = MaterialTheme.colorScheme.primary
-                ) {
-                    Icon(imageVector = Icons.Default.Add, contentDescription = "Add Post")
-                }
+                ExpandableFab(
+                    isExpanded = isFabExpanded,
+                    onFabClick = { isFabExpanded = !isFabExpanded },
+                    onWriteClick = {
+                        isFabExpanded = false
+                        // TODO: 글쓰기 화면 이동
+                    },
+                    onSearchClick = {
+                        isFabExpanded = false
+                        // TODO: 검색 화면 이동
+                    }
+                )
             }
         }
     ) { innerPadding ->
