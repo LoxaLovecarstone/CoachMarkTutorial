@@ -30,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.coachmarktutorial.ui.components.ExpandableFab
 import com.example.coachmarktutorial.ui.home.HomeScreen
+import com.example.coachmarktutorial.ui.navigation.MainNavGraph
 import com.example.coachmarktutorial.ui.navigation.Route
 import com.example.coachmarktutorial.ui.post.PostScreen
 import com.example.coachmarktutorial.ui.profile.ProfileScreen
@@ -41,20 +42,9 @@ import com.example.coachmarktutorial.ui.search.SearchScreen
 fun MainScreen() {
     val navController = rememberNavController()
 
-    val context = LocalContext.current
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route ?: Route.Home.path
-
-    val showBottomBar = currentRoute in Route.bottomBarRoutes.map { it.path }
     val isHome = currentRoute == Route.Home.path
-
-    //  Route 객체에서 제목을 찾아옴
-    val currentTitle = when (currentRoute) {
-        Route.Post.path -> Route.Post.title
-        Route.Search.path -> Route.Search.title
-        else -> Route.bottomBarRoutes.find { it.path == currentRoute }?.title ?: "Coach Mark"
-    }
 
     var isFabExpanded by remember { mutableStateOf(false) }
 
@@ -65,59 +55,25 @@ fun MainScreen() {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = currentTitle,
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                },
-                navigationIcon = {
-                    // 홈이 아니면 뒤로가기 버튼 표시
-                    if (!isHome && currentRoute != Route.Profile.path) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-                actions = {
-                    if (isHome) {
-                        IconButton(onClick = { /* TODO */ }) {
-                            Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
-                        }
-                    }
-                }
+            MainTopBar(
+                currentRoute = currentRoute,
+                onBackClick = { navController.popBackStack() },
+                onRefreshClick = { /* TODO: Refresh Action */ }
             )
         },
         bottomBar = {
-            if (showBottomBar) {
-                NavigationBar(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                ) {
-                    Route.bottomBarRoutes.forEach { route ->
-                        NavigationBarItem(
-                            icon = { Icon(route.icon!!, contentDescription = route.title) },
-                            label = { Text(route.title) },
-                            selected = currentRoute == route.path,
-                            onClick = {
-                                navController.navigate(route.path) {
-                                    popUpTo(navController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            }
-                        )
+            MainBottomBar(
+                currentRoute = currentRoute,
+                onNavigate = { targetRoute ->
+                    navController.navigate(targetRoute) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
                     }
                 }
-            }
+            )
         },
         floatingActionButton = {
             if (isHome) {
@@ -136,44 +92,9 @@ fun MainScreen() {
             }
         }
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = Route.Home.path,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(Route.Home.path) {
-                HomeScreen()
-            }
-            composable(Route.Profile.path) {
-                ProfileScreen(
-                    onEditClick = {
-                        navController.navigate(Route.ProfileEdit.path)
-                    }
-                )
-            }
-            composable(Route.Post.path) {
-                PostScreen(
-                    onBackClick = { navController.popBackStack() },
-                    onSaveClick = {
-                        navController.popBackStack()
-                    }
-                )
-            }
-            composable(Route.Search.path) {
-                SearchScreen(
-                    onPostClick = { postId ->
-                        // [수정] this 대신 context 사용 & .show() 추가
-                        Toast.makeText(context, "Clicked post: $postId", Toast.LENGTH_SHORT).show()
-                    }
-                )
-            }
-            composable(Route.ProfileEdit.path) {
-                ProfileEditScreen(
-                    onSaveSuccess = {
-                        navController.popBackStack() // 저장 후 뒤로가기
-                    }
-                )
-            }
-        }
+        MainNavGraph(
+            navController  = navController,
+            innerPadding = innerPadding
+        )
     }
 }
