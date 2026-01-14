@@ -11,6 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.example.coachmarktutorial.ui.coachmark.CoachMarkTarget
+import com.example.coachmarktutorial.ui.coachmark.coachMarkTarget
 import com.example.coachmarktutorial.ui.navigation.Route
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +57,10 @@ fun MainTopBar(
         ),
         actions = {
             if (isHome) {
-                IconButton(onClick = onRefreshClick) {
+                IconButton(
+                    onClick = onRefreshClick,
+                    modifier = Modifier.coachMarkTarget(CoachMarkTarget.REFRESH)
+                ) {
                     Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh")
                 }
             }

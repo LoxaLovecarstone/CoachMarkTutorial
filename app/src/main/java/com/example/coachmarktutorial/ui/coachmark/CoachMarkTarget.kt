@@ -7,11 +7,11 @@ enum class CoachMarkTarget {
     FAB,
 
     // [Post Scenario] - 나중에 사용
-    POST_TITLE,
-    POST_SUBMIT_BUTTON,
+//    POST_TITLE,
+//    POST_SUBMIT_BUTTON,
 
     // [Search Scenario] - 나중에 사용
-    SEARCH_INPUT
+//    SEARCH_INPUT
 }
 
 // CoachMarkTarget에 제목과 내용을 매핑
@@ -21,9 +21,9 @@ val CoachMarkTarget.texts: Pair<String, String>
     get() = when (this) {
         CoachMarkTarget.REFRESH -> "새로고침" to "데이터를 최신으로 업데이트하려면\n이 버튼을 누르세요."
         CoachMarkTarget.FAB -> "글쓰기" to "새로운 게시글을 작성하고 싶다면\n이 버튼을 눌러보세요."
-        CoachMarkTarget.POST_TITLE -> "제목 입력" to "여기에 게시글의 제목을 입력하세요."
-        CoachMarkTarget.POST_SUBMIT_BUTTON -> "등록하기" to "작성이 끝났으면 완료 버튼을 눌러주세요."
-        CoachMarkTarget.SEARCH_INPUT -> "검색" to "원하는 내용을 검색해 보세요."
+//        CoachMarkTarget.POST_TITLE -> "제목 입력" to "여기에 게시글의 제목을 입력하세요."
+//        CoachMarkTarget.POST_SUBMIT_BUTTON -> "등록하기" to "작성이 끝났으면 완료 버튼을 눌러주세요."
+//        CoachMarkTarget.SEARCH_INPUT -> "검색" to "원하는 내용을 검색해 보세요."
     }
 
 /*

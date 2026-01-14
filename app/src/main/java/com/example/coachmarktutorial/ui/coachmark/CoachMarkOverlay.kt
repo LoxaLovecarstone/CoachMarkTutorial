@@ -2,6 +2,7 @@ package com.example.coachmarktutorial.ui.coachmark
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity // import 추가
 import androidx.compose.ui.unit.IntOffset
 
@@ -41,6 +43,23 @@ fun CoachMarkOverlay(
         modifier = modifier
             .fillMaxSize()
             .graphicsLayer(alpha = 0.99f)
+            .pointerInput(currentTarget) {
+                detectTapGestures(
+                    onTap = { tapOffset ->
+                        if (targetRect != null) {
+                            // 탭한 위치가 타겟 안쪽인지 확인
+                            if (targetRect.contains(tapOffset)) {
+                                // 타겟을 클릭했다면 -> 다음 단계로 진행
+                                state.moveNext()
+                            } else {
+                                // 타겟 바깥(배경)을 클릭했다면 ->
+                                // 아무 일도 안 함 (터치 소비 -> 다른 버튼 클릭 방지)
+                                // 여기서는 '터치 무시'로 처리하여 사용자가 타겟을 누르도록 유도함
+                            }
+                        }
+                    }
+                )
+            }
     ) {
         val screenHeight = constraints.maxHeight
 
