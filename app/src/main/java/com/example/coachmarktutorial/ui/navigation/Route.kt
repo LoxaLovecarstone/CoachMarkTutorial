@@ -12,8 +12,8 @@ sealed class Route(
 ) {
 
     // 바텀 내비
-    data object Home : Route("home", "My Feed", Icons.Default.Home)
-    data object Profile : Route("profile", "My Profile", Icons.Default.AccountCircle)
+    data object Home : Route("home", "피드", Icons.Default.Home)
+    data object Profile : Route("profile", "프로필", Icons.Default.AccountCircle)
 
     // 바텀 내비 없는 것
     data object Post : Route("post", "새 글 작성")
