@@ -48,6 +48,23 @@ fun MainScreen() {
         isFabExpanded = false
     }
 
+    LaunchedEffect(coachMarkState.currentTarget) {
+        when (coachMarkState.currentTarget) {
+            CoachMarkTarget.POST_BUTTON -> {
+                isFabExpanded = true
+            }
+
+            CoachMarkTarget.POST_CATEGORY -> {
+                isFabExpanded = false // 메뉴 닫기
+                navController.navigate(Route.Post.path)
+            }
+
+            else -> {
+                // 필요 시 다른 처리
+            }
+        }
+    }
+
 
     CompositionLocalProvider(LocalCoachMarkState provides coachMarkState) {
         Box(modifier = Modifier.fillMaxSize()) {

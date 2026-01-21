@@ -30,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.example.coachmarktutorial.ui.coachmark.CoachMarkTarget
+import com.example.coachmarktutorial.ui.coachmark.coachMarkTarget
 import com.example.coachmarktutorial.ui.theme.Dimens
 
 @Composable
@@ -54,14 +56,16 @@ fun ExpandableFab(
             visible = isExpanded,
             icon = Icons.Default.Search,
             text = "글 검색",
-            onClick = onSearchClick
+            onClick = onSearchClick,
+
         )
 
         FabOption(
             visible = isExpanded,
             icon = Icons.Default.Edit,
             text = "글 쓰기",
-            onClick = onPostClick
+            onClick = onPostClick,
+            modifier = Modifier.coachMarkTarget(CoachMarkTarget.POST_BUTTON)
         )
 
         FloatingActionButton(
@@ -83,7 +87,8 @@ private fun FabOption(
     visible: Boolean,
     icon: ImageVector,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     AnimatedVisibility(
         visible = visible,
@@ -109,6 +114,7 @@ private fun FabOption(
 
             SmallFloatingActionButton(
                 onClick = onClick,
+                modifier = modifier,
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
             ) {

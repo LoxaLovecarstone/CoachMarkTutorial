@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalDensity // import 추가
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 
 @Composable
@@ -47,14 +47,10 @@ fun CoachMarkOverlay(
                 detectTapGestures(
                     onTap = { tapOffset ->
                         if (targetRect != null) {
-                            // 탭한 위치가 타겟 안쪽인지 확인
                             if (targetRect.contains(tapOffset)) {
-                                // 타겟을 클릭했다면 -> 다음 단계로 진행
                                 state.moveNext()
                             } else {
-                                // 타겟 바깥(배경)을 클릭했다면 ->
-                                // 아무 일도 안 함 (터치 소비 -> 다른 버튼 클릭 방지)
-                                // 여기서는 '터치 무시'로 처리하여 사용자가 타겟을 누르도록 유도함
+                                // 배경 클릭 무시
                             }
                         }
                     }
@@ -84,7 +80,12 @@ fun CoachMarkOverlay(
         // 툴팁 배치
         if (targetRect != null) {
             val targetCenterY = targetRect.top + (targetRect.height / 2)
+
+            //  기본적으로 화면 아래쪽에 있으면 툴팁을 위로 올리지만,
+            // '옵션 선택' 단계일 때는 메뉴가 아래로 열리므로 강제로 툴팁을 위로 보냄.
+            val forceTop = currentTarget == CoachMarkTarget.POST_CATEGORY_OPTION
             val isBottomTarget = targetCenterY > (screenHeight / 2)
+            val placeTooltipAbove = isBottomTarget || forceTop
 
             Box(
                 modifier = Modifier
@@ -97,14 +98,13 @@ fun CoachMarkOverlay(
                     onNext = { state.moveNext() },
                     onDismiss = { state.setCurrentStep(null) },
                     modifier = Modifier
-                        .align(Alignment.TopCenter) // 기본적으로 상단 중앙 정렬 기준
+                        .align(Alignment.TopCenter)
                         .offset {
-                            //
-                            val yPosition = if (isBottomTarget) {
-                                // 타겟 위에 배치: (타겟 Top - 200dp 정도 위)
+                            val yPosition = if (placeTooltipAbove) {
+                                // 타겟 위에 배치 (메뉴에 가려지지 않게 위로 띄움)
                                 (targetRect.top - 200 * density.density).toInt().coerceAtLeast(0)
                             } else {
-                                // 타겟 아래에 배치: (타겟 Bottom + 10dp 여백)
+                                // 타겟 아래에 배치
                                 (targetRect.bottom + 10 * density.density).toInt()
                             }
 

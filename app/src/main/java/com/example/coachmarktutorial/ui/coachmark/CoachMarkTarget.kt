@@ -6,12 +6,15 @@ enum class CoachMarkTarget {
     REFRESH,
     FAB,
 
-    // [Post Scenario] - 나중에 사용
-//    POST_TITLE,
-//    POST_SUBMIT_BUTTON,
+    POST_BUTTON,  // FAB 메뉴 중 글 쓰기 버튼
+    POST_CATEGORY,
+    POST_CATEGORY_OPTION,
+    POST_TITLE,
+    POST_CONTENT,
+    POST_SUBMIT,
 
     // [Search Scenario] - 나중에 사용
-//    SEARCH_INPUT
+    SEARCH_INPUT
 }
 
 // CoachMarkTarget에 제목과 내용을 매핑
@@ -21,9 +24,13 @@ val CoachMarkTarget.texts: Pair<String, String>
     get() = when (this) {
         CoachMarkTarget.REFRESH -> "새로고침" to "데이터를 최신으로 업데이트하려면\n이 버튼을 누르세요."
         CoachMarkTarget.FAB -> "글쓰기" to "새로운 게시글을 작성하고 싶다면\n이 버튼을 눌러보세요."
-//        CoachMarkTarget.POST_TITLE -> "제목 입력" to "여기에 게시글의 제목을 입력하세요."
-//        CoachMarkTarget.POST_SUBMIT_BUTTON -> "등록하기" to "작성이 끝났으면 완료 버튼을 눌러주세요."
-//        CoachMarkTarget.SEARCH_INPUT -> "검색" to "원하는 내용을 검색해 보세요."
+        CoachMarkTarget.POST_BUTTON -> "글쓰기" to "새로운 글을 작성하려면\n이 버튼을 선택하세요."
+        CoachMarkTarget.POST_CATEGORY -> "카테고리" to "여러 카테고리 중 질문을 해봅시다"
+        CoachMarkTarget.POST_CATEGORY_OPTION -> "항목 선택" to "목록에서 '질문'을 선택해주세요."
+        CoachMarkTarget.POST_TITLE -> "제목 입력" to "여기에 게시글의 제목을 입력하세요."
+        CoachMarkTarget.POST_CONTENT -> "내용 입력" to "게시글의 내용을 자유롭게 작성하세요."
+        CoachMarkTarget.POST_SUBMIT -> "등록하기" to "모두 작성했다면 등록 버튼을 누르세요."
+        CoachMarkTarget.SEARCH_INPUT -> "검색" to "이제 작성한 글을 검색해 볼까요?"
     }
 
 /*
