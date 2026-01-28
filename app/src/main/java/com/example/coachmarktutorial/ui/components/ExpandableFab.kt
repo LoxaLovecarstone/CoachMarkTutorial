@@ -57,6 +57,7 @@ fun ExpandableFab(
             icon = Icons.Default.Search,
             text = "글 검색",
             onClick = onSearchClick,
+            modifier = Modifier.coachMarkTarget(CoachMarkTarget.FAB_SEARCH)
 
         )
 

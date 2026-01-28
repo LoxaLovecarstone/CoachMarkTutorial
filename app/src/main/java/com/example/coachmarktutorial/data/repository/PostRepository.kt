@@ -35,4 +35,31 @@ class PostRepository @Inject constructor() {
             listOf(newPost) + currentList
         }
     }
+
+    fun deletePost(postId: Long) {
+        _posts.update { currentList ->
+            currentList.filter { it.id != postId }
+        }
+    }
+
+    fun getPost(postId: Long): Post? {
+        return _posts.value.find { it.id == postId }
+    }
+
+    fun updatePost(id: Long, title: String, category: Category, content: String) {
+        _posts.update { currentList ->
+            currentList.map { post ->
+                if (post.id == id) {
+                    // copy를 사용해 기존 ID와 작성자 등은 유지하고 내용만 바꿈
+                    post.copy(
+                        title = title,
+                        category = category,
+                        content = content
+                    )
+                } else {
+                    post
+                }
+            }
+        }
+    }
 }
