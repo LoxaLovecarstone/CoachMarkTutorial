@@ -17,6 +17,7 @@ import com.example.coachmarktutorial.ui.post.PostScreen
 import com.example.coachmarktutorial.ui.profile.ProfileScreen
 import com.example.coachmarktutorial.ui.profile.edit.ProfileEditScreen
 import com.example.coachmarktutorial.ui.search.SearchScreen
+import com.example.coachmarktutorial.ui.slider.SliderScreen
 
 @Composable
 fun MainNavGraph(
@@ -33,6 +34,11 @@ fun MainNavGraph(
         composable(Route.Home.path) {
             HomeScreen()
         }
+
+        composable(Route.Slider.path) {
+            SliderScreen()
+        }
+
         composable(Route.Profile.path) {
             ProfileScreen(
                 onEditClick = {
