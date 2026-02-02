@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -24,11 +25,14 @@ import com.example.coachmarktutorial.ui.coachmark.rememberCoachMarkState
 import com.example.coachmarktutorial.ui.components.ExpandableFab
 import com.example.coachmarktutorial.ui.navigation.MainNavGraph
 import com.example.coachmarktutorial.ui.navigation.Route
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(
+    viewModel: MainViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -40,8 +44,12 @@ fun MainScreen() {
     val coachMarkState = rememberCoachMarkState()
 
     LaunchedEffect(Unit) {
-        delay(1000) // UI가 그려질 시간을 줌
-        coachMarkState.setCurrentStep(CoachMarkTarget.REFRESH)
+        if (!viewModel.isTutorialStarted) {
+            // 처음 실행이라면: 1초 뒤 시작
+            delay(1000)
+            coachMarkState.setCurrentStep(CoachMarkTarget.REFRESH)
+            viewModel.isTutorialStarted = true
+        } // 그 이후는 아무것도 하지 않음
     }
 
     LaunchedEffect(currentRoute) {
